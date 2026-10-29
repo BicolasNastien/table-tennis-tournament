@@ -1,5 +1,5 @@
 {
-  "name": "@pingtournoi/core",
+  "name": "@pingtournament/core",
   "private": true,
   "type": "module",
   "main": "src/index.ts",
