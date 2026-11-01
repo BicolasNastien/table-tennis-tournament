@@ -17,7 +17,7 @@ export const GameError = {
   InvalidScore: 'invalid-score',
   BelowEleven: 'below-eleven',
   LoserTooHigh: 'loser-too-high',
-  NotTwoPointsGap: 'not-two-points-gap'
+  NotTwoPointsGap: 'not-two-points-gap',
 } as const;
 
 export type GameError = (typeof GameError)[keyof typeof GameError];
@@ -50,3 +50,20 @@ export interface Scoring {
   loss: number;
   forfeit: number;
 }
+
+export type BestOf = 3 | 5 | 7;
+
+export type Side = 'p1' | 'p2';
+
+export interface Outcome {
+  winner: Side;
+  sets: { p1: number; p2: number };
+  points: { p1: number; p2: number };
+}
+
+export const MatchError = {
+  Incomplete: 'incomplete',
+  ExtraGames: 'extra-games',
+} as const;
+
+export type MatchError = (typeof MatchError)[keyof typeof MatchError];
