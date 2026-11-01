@@ -8,10 +8,7 @@ export interface Player {
   points: number;
 }
 
-export interface Game {
-  p1: number;
-  p2: number;
-}
+export type Game = Record<Side, number>;
 
 export const GameError = {
   InvalidScore: 'invalid-score',
@@ -57,8 +54,8 @@ export type Side = 'p1' | 'p2';
 
 export interface Outcome {
   winner: Side;
-  sets: { p1: number; p2: number };
-  points: { p1: number; p2: number };
+  sets: Record<Side, number>;
+  points: Record<Side, number>;
 }
 
 export const MatchError = {

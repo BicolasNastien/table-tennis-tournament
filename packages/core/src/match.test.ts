@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { matchOutcome, validateGame } from './match';
-import { type BestOf, type Game, GameError, MatchError, type Outcome } from './types';
+import { matchOutcome, validateGame, forfeitOutcome } from './match';
+import { type Game, GameError, MatchError } from './types';
 
 describe('validateGame (RG-02)', () => {
   it('accept 11-9', () => expect(validateGame(11, 9)).toBeNull());
@@ -72,12 +72,46 @@ describe('matchOutcome (RG-01)', () => {
   it('2-2 must return Incomplete MatchError', () => {
     expect(matchOutcome(games('11-3 12-10 3-11 10-12'), 5)).toBe(MatchError.Incomplete);
   });
+
+  function games(score: string): Game[] {
+    if (score === '') return [];
+    return score.split(' ').map((g) => {
+      const [p1, p2] = g.split('-').map(Number);
+      return { p1: p1!, p2: p2! };
+    });
+  }
 });
 
-function games(score: string): Game[] {
-  if (score === '') return [];
-  return score.split(' ').map((g) => {
-    const [p1, p2] = g.split('-').map(Number);
-    return { p1: p1!, p2: p2! };
+describe('forfeitOutcome (RG-07)', () => {
+  it('forfeit from p1, best of 5', () => {
+    expect(forfeitOutcome('p1', 5)).toEqual({
+      winner: 'p2',
+      sets: { p1: 0, p2: 3 },
+      points: { p1: 0, p2: 33 },
+    });
   });
-}
+
+  it('forfeit from p2, best of 5', () => {
+    expect(forfeitOutcome('p2', 5)).toEqual({
+      winner: 'p1',
+      sets: { p1: 3, p2: 0 },
+      points: { p1: 33, p2: 0 },
+    });
+  });
+
+  it('forfeit from p1, best of 3', () => {
+    expect(forfeitOutcome('p1', 3)).toEqual({
+      winner: 'p2',
+      sets: { p1: 0, p2: 2 },
+      points: { p1: 0, p2: 22 },
+    });
+  });
+
+  it('forfeit from p2, best of 7', () => {
+    expect(forfeitOutcome('p2', 7)).toEqual({
+      winner: 'p1',
+      sets: { p1: 4, p2: 0 },
+      points: { p1: 44, p2: 0 },
+    });
+  });
+});

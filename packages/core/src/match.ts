@@ -1,4 +1,10 @@
-import { BestOf, Game, GameError, MatchError, Outcome } from './types';
+import { BestOf, Game, GameError, MatchError, Outcome, Side } from './types';
+
+function needed(bestOf: BestOf): number {
+  return (bestOf + 1) / 2;
+}
+
+const NB_GAME_POINT = 11;
 
 export function validateGame(a: number, b: number): GameError | null {
   const loser = Math.min(a, b);
@@ -28,7 +34,7 @@ export function validateGame(a: number, b: number): GameError | null {
 }
 
 export function matchOutcome(games: Game[], bestOf: BestOf): Outcome | MatchError {
-  const needed = (bestOf + 1) / 2;
+  const requiredSets = needed(bestOf);
 
   let p1SetCount = 0;
   let p2SetCount = 0;
@@ -36,7 +42,7 @@ export function matchOutcome(games: Game[], bestOf: BestOf): Outcome | MatchErro
   let p2PointCount = 0;
 
   for (const game of games) {
-    if (p1SetCount === needed || p2SetCount === needed) {
+    if (p1SetCount === requiredSets || p2SetCount === requiredSets) {
       return MatchError.ExtraGames;
     }
     if (game.p1 > game.p2) {
@@ -48,13 +54,32 @@ export function matchOutcome(games: Game[], bestOf: BestOf): Outcome | MatchErro
     p2PointCount += game.p2;
   }
 
-  if (p1SetCount < needed && p2SetCount < needed) {
+  if (p1SetCount < requiredSets && p2SetCount < requiredSets) {
     return MatchError.Incomplete;
   }
 
   return {
-    winner: p1SetCount === needed ? 'p1' : 'p2',
+    winner: p1SetCount === requiredSets ? 'p1' : 'p2',
     sets: { p1: p1SetCount, p2: p2SetCount },
     points: { p1: p1PointCount, p2: p2PointCount },
   };
+}
+
+export function forfeitOutcome(forfeiter: Side, bestOf: BestOf): Outcome {
+  const requiredSets = needed(bestOf);
+
+  switch (forfeiter) {
+    case 'p1':
+      return {
+        winner: 'p2',
+        sets: { p1: 0, p2: requiredSets },
+        points: { p1: 0, p2: requiredSets * NB_GAME_POINT },
+      };
+    case 'p2':
+      return {
+        winner: 'p1',
+        sets: { p1: requiredSets, p2: 0 },
+        points: { p1: requiredSets * NB_GAME_POINT, p2: 0 },
+      };
+  }
 }
