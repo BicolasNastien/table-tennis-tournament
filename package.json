@@ -5,7 +5,9 @@
   "description": "",
   "scripts": {
     "test": "pnpm -r test",
-    "coverage": "pnpm -r coverage"
+    "coverage": "pnpm -r coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
@@ -18,5 +20,8 @@
     }
   },
   "packageManager": "pnpm@12.16.0",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "prettier": "^3.9.10"
+  }
 }
