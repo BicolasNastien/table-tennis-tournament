@@ -64,3 +64,8 @@ export const MatchError = {
 } as const;
 
 export type MatchError = (typeof MatchError)[keyof typeof MatchError];
+
+export interface PoolDraft {
+  letter: string;
+  players: Player[];
+}

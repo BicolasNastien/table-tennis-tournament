@@ -61,7 +61,7 @@ describe('matchOutcome (RG-01)', () => {
     expect(matchOutcome(games(''), 5)).toBe(MatchError.Incomplete);
   });
 
-  it('Must return ExtraGames MatchError', () => {
+  it('4-0 for best of 5 must return ExtraGames MatchError', () => {
     expect(matchOutcome(games('11-8 11-5 12-10 11-0'), 5)).toBe(MatchError.ExtraGames);
   });
 
