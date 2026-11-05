@@ -65,7 +65,13 @@ export const MatchError = {
 
 export type MatchError = (typeof MatchError)[keyof typeof MatchError];
 
+export interface ClubConflict {
+  club: string;
+  playerIds: Id[];
+}
+
 export interface PoolDraft {
   letter: string;
   players: Player[];
+  clubConflicts: ClubConflict[];
 }
