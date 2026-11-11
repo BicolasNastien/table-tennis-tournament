@@ -86,6 +86,8 @@ export function avoidClubConflicts(pools: PoolDraft[]): PoolDraft[] {
 
 // RG-05 : official rotation tables (favorites plays the last match)
 const ROTATION: Record<number, [number, number][]> = {
+  // RG-03: an incomplete pool can have 2 players (pending referee confirmation, see RG-12)
+  2: [[1, 2]],
   3: [
     [2, 3],
     [1, 3],
@@ -114,8 +116,8 @@ const ROTATION: Record<number, [number, number][]> = {
 };
 
 export function poolMatchOrder(size: number): [number, number][] {
-  if (size < 3 || size > 6) {
-    throw new Error(`Invalid pool size ${size} (expected 3 to 6).`);
+  if (size < 2 || size > 6) {
+    throw new Error(`Invalid pool size ${size} (expected 2 to 6).`);
   }
 
   const table = ROTATION[size];

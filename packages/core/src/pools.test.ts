@@ -188,11 +188,15 @@ describe('poolMatchOrder (RG-05)', () => {
   });
 
   it('Throw an error for poolsize > 6', () => {
-    expect(() => poolMatchOrder(7)).toThrow('Invalid pool size 7 (expected 3 to 6).');
+    expect(() => poolMatchOrder(7)).toThrow('Invalid pool size 7 (expected 2 to 6).');
   });
 
-  it('Throw an error for poolsize < 3', () => {
-    expect(() => poolMatchOrder(2)).toThrow('Invalid pool size 2 (expected 3 to 6).');
+  it('Pool match order for 2 as pool size (incomplete pool, RG-03)', () => {
+    expect(poolMatchOrder(2)).toEqual([[1, 2]]);
+  });
+
+  it('Throw an error for poolsize < 2', () => {
+    expect(() => poolMatchOrder(1)).toThrow('Invalid pool size 1 (expected 2 to 6).');
   });
 
   it('each player plays once per round for 6 players', () => {
