@@ -54,7 +54,9 @@ describe('buildPools (RG-03)', () => {
     buildPools(players, 4);
     expect(players).toEqual(playersCopy);
   });
+});
 
+describe('avoidClubConflicts (RG-04)', () => {
   it('Simple switch (p1, p5 : X)', () => {
     const pools = buildPools(makePlayers(8, { p1: 'X', p5: 'X' }), 4);
     expect(ids(pools)).toEqual([
@@ -116,18 +118,18 @@ describe('buildPools (RG-03)', () => {
 
     expect(pools).toEqual(copy);
   });
-
-  function makePlayers(n: number, clubs: Record<string, string> = {}): Player[] {
-    return Array.from({ length: n }, (_, i) => ({
-      id: `p${i + 1}`,
-      lastName: `Player${i + 1}`,
-      firstName: 'Test',
-      club: clubs[`p${i + 1}`] ?? `Club${i + 1}`,
-      points: 2000 - i * 10,
-    }));
-  }
-
-  function ids(pools: PoolDraft[]): string[][] {
-    return pools.map((p) => p.players.map((pl) => pl.id));
-  }
 });
+
+function makePlayers(n: number, clubs: Record<string, string> = {}): Player[] {
+  return Array.from({ length: n }, (_, i) => ({
+    id: `p${i + 1}`,
+    lastName: `Player${i + 1}`,
+    firstName: 'Test',
+    club: clubs[`p${i + 1}`] ?? `Club${i + 1}`,
+    points: 2000 - i * 10,
+  }));
+}
+
+function ids(pools: PoolDraft[]): string[][] {
+  return pools.map((p) => p.players.map((pl) => pl.id));
+}
